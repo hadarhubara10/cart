@@ -169,7 +169,7 @@ function showAll() {
             }</span>
             <img id="${
               arrayOrder[index].cartID
-            }" style="width: 19px; float:right;" src="/images/x-button.png">
+            }" style="width: 19px; float:right;" src="./images/x-button.png">
           </li>`;
   }
   checkTotalCart();
