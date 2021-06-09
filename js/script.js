@@ -1,5 +1,5 @@
 //import the categories
-import * as names from "modules/categories.js";
+import * as names from "../modules/categories.js";
 
 // variable
 
