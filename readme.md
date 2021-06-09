@@ -1,8 +1,3 @@
-<style>
-body{
-  text-align:center;
-}
-</style>
 
 # Shopping Cart Project
 
