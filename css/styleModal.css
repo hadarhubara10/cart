@@ -1,0 +1,81 @@
+p,
+a,
+label {
+  font-size: 14px;
+  text-transform: capitalize;
+  color: #6a6969;
+}
+
+.card-checkout {
+  max-width: 500px;
+  margin: 30px auto;
+  background: #fff;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.card-checkout > .heading {
+  display: inline-block;
+  background: #fff;
+  padding: 24px 32px 0 48px;
+  text-transform: capitalize;
+  font-family: "Lato", sans-serif;
+  letter-spacing: 0.08em;
+}
+.card-checkout > .heading > .icon {
+  color: #5ab45a;
+  font-size: 1.5em;
+}
+.card-checkout > .content {
+  padding: 24px 32px 32px 40px;
+}
+
+.input-group {
+  display: flex;
+  -webkit-appearance: none;
+  border-radius: 8px;
+  border: 2px solid #ccd7e0;
+  background: #fdfdfc;
+  padding: 0;
+  font-weight: normal;
+  color: #345;
+  width: 270px;
+}
+
+.input-group > .form-control {
+  width: 100%;
+  padding: 12px;
+}
+
+.form-control {
+  -webkit-appearance: none;
+  border-radius: 16px;
+  border: none;
+  background: #fdfdfc;
+  padding: 8px;
+  font-weight: normal;
+  color: #345;
+}
+
+.button {
+  -webkit-appearance: none;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  background-image: none;
+  border: 1px solid transparent;
+  padding: 12px 12px;
+  font-size: 14px;
+  border-radius: 12px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #fff;
+  background: #4268b3;
+  letter-spacing: 0.08em;
+}
+.button.-primary {
+  padding: 8px;
+  background: #5ab45a;
+}
