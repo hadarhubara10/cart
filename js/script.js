@@ -22,6 +22,7 @@ let idClientInArray;
 let quantity = 1;
 
 window.onload = () => {
+  getClientFromLocalStorage();
   // Get data from localStorage
   if (localStorage.getItem("arrayOrder") != null) {
     getToLocalStorsge();
@@ -62,27 +63,7 @@ window.onload = () => {
 
   // Alert successful or error
   idPay.onclick = () => {
-    if (
-      idInputName.value != "" &&
-      idInputMail.value != "" &&
-      idPhoneName.value != ""
-    ) {
-      alertify.alert(
-        "",
-        `<span class="fas fa-clipboard-check" style="vertical-align:middle;color:blue;">&nbsp;	
-               </span>Your purchase was successful!`,
-        function () {
-          alertify.success("Thanks for buying");
-        }
-      );
-      // remove localStorage
-      localStorage.removeItem("arrayOrder");
-      addToClientArray();
-    } else {
-      alertify.alert(`<span class="fa fa-times-circle fa-2x"
-                style="vertical-align:middle;color:#e10000;">&nbsp;	
-               </span> Please fill this form!`);
-    }
+    endCheckout();
   };
 };
 // View the product of category on site
@@ -255,22 +236,22 @@ function checkIfClientInArray() {
 function addToClientArray() {
   if (!checkIfClientInArray()) {
     clientList.push({
-      PKidClient: PKidClientNum,
+      PKidClient: clientList.length + 1,
       clientName: idInputName.value,
       clientPhone: idPhoneName.value,
       clientMail: idInputMail.value,
     });
     orderDetails.push({
-      PKorderId: PKorderIdNum,
+      PKorderId: orderDetails.length + 1,
       dateOrder: new Date(),
-      clientId: PKidClientNum,
+      clientId: clientList.length,
       product: arrayOrder,
     });
     PKidClientNum++;
     PKorderIdNum++;
   } else {
     orderDetails.push({
-      PKorderId: PKorderIdNum,
+      PKorderId: orderDetails.length + 1,
       dateOrder: new Date(),
       clientId: idClientInArray,
       product: arrayOrder,
@@ -278,7 +259,6 @@ function addToClientArray() {
     PKorderIdNum++;
   }
   console.log(clientList);
-
   console.log(orderDetails);
 }
 // If order in arrayOrder, quantity++.
@@ -293,4 +273,43 @@ function checkIfOrderInArray(orderID) {
     }
   }
   return false;
+}
+
+function saveClientToLocalStorage() {
+  localStorage.setItem("orderDetails", JSON.stringify(orderDetails));
+  localStorage.setItem("clientList", JSON.stringify(clientList));
+}
+function getClientFromLocalStorage() {
+  // debugger;
+  orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
+  clientList = JSON.parse(localStorage.getItem("clientList"));
+  if (clientList == null) clientList = [];
+  if (orderDetails == null) orderDetails = [];
+  console.log(orderDetails);
+  console.log(clientList);
+}
+
+function endCheckout() {
+  if (
+    idInputName.value != "" &&
+    idInputMail.value != "" &&
+    idPhoneName.value != ""
+  ) {
+    alertify.alert(
+      "",
+      `<span class="fas fa-clipboard-check" style="vertical-align:middle;color:blue;">&nbsp;	
+               </span>Your purchase was successful!`,
+      function () {
+        alertify.success("Thanks for buying");
+      }
+    );
+    // remove localStorage
+    localStorage.removeItem("arrayOrder");
+    addToClientArray();
+  } else {
+    alertify.alert(`<span class="fa fa-times-circle fa-2x"
+                style="vertical-align:middle;color:#e10000;">&nbsp;	
+               </span> Please fill this form!`);
+  }
+  saveClientToLocalStorage();
 }
