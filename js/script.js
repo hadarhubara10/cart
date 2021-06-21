@@ -1,5 +1,5 @@
 //import the categories
-import * as names from "../modules/categories.js";
+import * as names from '../modules/categories.js';
 
 // variable
 
@@ -10,7 +10,7 @@ let phoneArray = arrayCat[0].phone;
 let tvArray = arrayCat[1].TV;
 // Laptop path
 let laptopArray = arrayCat[2].laptop;
-let typeOrder = "phone";
+let typeOrder = 'phone';
 let viewNav = true;
 let arrayOrder = [];
 let orderDetails = [];
@@ -20,11 +20,13 @@ let PKidClientNum = 1;
 // id number of client in array
 let idClientInArray;
 let quantity = 1;
+// variable valid function
+let trueNum;
 
 window.onload = () => {
   getClientFromLocalStorage();
   // Get data from localStorage
-  if (localStorage.getItem("arrayOrder") != null) {
+  if (localStorage.getItem('arrayOrder') != null) {
     getToLocalStorsge();
     checkTotalCart();
   }
@@ -63,12 +65,16 @@ window.onload = () => {
 
   // Alert successful or error
   idPay.onclick = () => {
-    endCheckout();
+    trueNum = 0;
+    regExpValidPhone();
+    regExpValidName();
+    regExpValidMail();
+    if (trueNum == 3) endCheckout();
   };
 };
 // View the product of category on site
 function categoryToView(category) {
-  rowCart.innerHTML = "";
+  rowCart.innerHTML = '';
   for (let i = 0; i < category.length; i++) {
     rowCart.innerHTML += `<div class="col mb-5">
             <div class="card h-100">
@@ -109,11 +115,11 @@ function categoryToView(category) {
 
 // Add comma to number
 function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 // Add product to cart, and save the product in arrayOrder
 function addToCart() {
-  if (event.target.type == "submit") {
+  if (event.target.type == 'submit') {
     // console.log(event.target);
     let allArray = phoneArray.concat(tvArray, laptopArray);
     for (const key in allArray) {
@@ -123,8 +129,8 @@ function addToCart() {
         } else {
           arrayOrder.push(allArray[key]);
           new Toast({
-            message: "The product added to the cart!",
-            type: "success",
+            message: 'The product added to the cart!',
+            type: 'success',
           });
           // לשנות את הסכום
           idBadge.innerHTML = arrayOrder.length;
@@ -137,7 +143,7 @@ function addToCart() {
 }
 // Show all in cart
 function showAll() {
-  idUlSideBar.innerHTML = "";
+  idUlSideBar.innerHTML = '';
   for (const index in arrayOrder) {
     idUlSideBar.innerHTML += `<li class="clearfix">
             <img src="${arrayOrder[index].img}"alt="item1"/>
@@ -179,12 +185,11 @@ function removeOrderInCart() {
 }
 // Show/Hide Cart in site
 function displayLeftNav() {
+  $('#idSideNav').slideToggle();
   if (viewNav) {
-    idSideNav.style.display = "none";
     viewAll.innerHTML = `View Cart<i class="fas fa-shopping-cart"></i>`;
     viewNav = false;
   } else {
-    idSideNav.style.display = "block";
     viewAll.innerHTML = `Hide Cart<i class="fas fa-shopping-cart"></i>`;
     viewNav = true;
   }
@@ -197,19 +202,19 @@ function checkTotalCart() {
       Number(arrayOrder[index].price) * arrayOrder[index].quantity;
     totalValue += totalOrder;
   }
-  idTotalCart.innerHTML = numberWithCommas(totalValue) + "₪";
+  idTotalCart.innerHTML = numberWithCommas(totalValue) + '₪';
   idBadge.innerHTML = arrayOrder.length;
   saveToLocalStorage();
 }
 
 // Save on local storage
 function saveToLocalStorage() {
-  localStorage.setItem("arrayOrder", JSON.stringify(arrayOrder));
+  localStorage.setItem('arrayOrder', JSON.stringify(arrayOrder));
 }
 
 // Get on local storage
 function getToLocalStorsge() {
-  arrayOrder = localStorage.getItem("arrayOrder");
+  arrayOrder = localStorage.getItem('arrayOrder');
   console.log(arrayOrder);
   arrayOrder = JSON.parse(arrayOrder);
   idBadge.innerHTML = arrayOrder.length;
@@ -244,7 +249,7 @@ function addToClientArray() {
     orderDetails.push({
       PKorderId: orderDetails.length + 1,
       dateOrder: new Date(),
-      clientId: clientList.length,
+      clientId: PKidClientNum,
       product: arrayOrder,
     });
     PKidClientNum++;
@@ -276,13 +281,13 @@ function checkIfOrderInArray(orderID) {
 }
 
 function saveClientToLocalStorage() {
-  localStorage.setItem("orderDetails", JSON.stringify(orderDetails));
-  localStorage.setItem("clientList", JSON.stringify(clientList));
+  localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+  localStorage.setItem('clientList', JSON.stringify(clientList));
 }
 function getClientFromLocalStorage() {
   // debugger;
-  orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
-  clientList = JSON.parse(localStorage.getItem("clientList"));
+  orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
+  clientList = JSON.parse(localStorage.getItem('clientList'));
   if (clientList == null) clientList = [];
   if (orderDetails == null) orderDetails = [];
   console.log(orderDetails);
@@ -291,25 +296,59 @@ function getClientFromLocalStorage() {
 
 function endCheckout() {
   if (
-    idInputName.value != "" &&
-    idInputMail.value != "" &&
-    idPhoneName.value != ""
+    idInputName.value != '' &&
+    idInputMail.value != '' &&
+    idPhoneName.value != ''
   ) {
     alertify.alert(
-      "",
+      '',
       `<span class="fas fa-clipboard-check" style="vertical-align:middle;color:blue;">&nbsp;	
                </span>Your purchase was successful!`,
       function () {
-        alertify.success("Thanks for buying");
+        alertify.success('Thanks for buying');
       }
     );
     // remove localStorage
-    localStorage.removeItem("arrayOrder");
+    localStorage.removeItem('arrayOrder');
     addToClientArray();
+    saveClientToLocalStorage();
+  }
+}
+
+// check if work
+function regExpValidMail() {
+  let patternMail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+  let result = patternMail.test(idInputMail.value);
+  if (result) {
+    trueNum++;
+    return true;
   } else {
     alertify.alert(`<span class="fa fa-times-circle fa-2x"
                 style="vertical-align:middle;color:#e10000;">&nbsp;	
-               </span> Please fill this form!`);
+               </span> Please fill your mail!`);
   }
-  saveClientToLocalStorage();
+}
+function regExpValidName() {
+  let patterName = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g;
+  let result = patterName.test(idInputName.value);
+  if (result) {
+    trueNum++;
+    return true;
+  } else {
+    alertify.alert(`<span class="fa fa-times-circle fa-2x"
+                style="vertical-align:middle;color:#e10000;">&nbsp;	
+               </span> Please fill your Name!`);
+  }
+}
+function regExpValidPhone() {
+  let patterPhone = /^^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g;
+  let result = patterPhone.test(idPhoneName.value);
+  if (result) {
+    trueNum++;
+    return true;
+  } else {
+    alertify.alert(`<span class="fa fa-times-circle fa-2x"
+                style="vertical-align:middle;color:#e10000;">&nbsp;	
+               </span> Please fill your Phone!`);
+  }
 }
