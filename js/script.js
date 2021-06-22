@@ -132,7 +132,7 @@ function addToCart() {
             message: 'The product added to the cart!',
             type: 'success',
           });
-          // לשנות את הסכום
+          // Total
           idBadge.innerHTML = arrayOrder.length;
           checkTotalCart();
           showAll();
