@@ -248,7 +248,8 @@ function addToClientArray() {
     });
     orderDetails.push({
       PKorderId: orderDetails.length + 1,
-      dateOrder: new Date(),
+      // moment library
+      dateOrder: moment().format('MMMM Do YYYY, h:mm:ss a'),
       clientId: PKidClientNum,
       product: arrayOrder,
     });
@@ -257,7 +258,8 @@ function addToClientArray() {
   } else {
     orderDetails.push({
       PKorderId: orderDetails.length + 1,
-      dateOrder: new Date(),
+      // moment library
+      dateOrder: moment().format('MMMM Do YYYY, h:mm:ss a'),
       clientId: idClientInArray,
       product: arrayOrder,
     });
@@ -352,3 +354,5 @@ function regExpValidPhone() {
                </span> Please fill your Phone!`);
   }
 }
+
+// console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
